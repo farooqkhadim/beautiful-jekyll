@@ -1,7 +1,7 @@
 ---
 layout: post
-title: Flake it till you make it
-subtitle: Excerpt from Soulshaping by Jeff Brown
+title: Fake Comment Detection Using Machine Learning 
+subtitle: Used Simple Classifiers SVM, RandomForests, LogsiticRegression
 
 ---
 
