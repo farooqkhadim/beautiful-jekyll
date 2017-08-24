@@ -1,7 +1,7 @@
 ---
 layout: post
 title: First post!
-image: /img/Machine_Learning.jpeg
+image: /img/Machine_Learning.jpg
 tags: [random, exciting-stuff]
 ---
 
