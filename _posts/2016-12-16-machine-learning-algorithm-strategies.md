@@ -8,12 +8,12 @@ subtitle: Which Machine Learning Algorithm To Choose
 Machine Learning is the foundation for today’s insights on customer, products, costs and revenues which learns from the data provided to its algorithms.
 Some of the most common examples of machine learning are Netflix’s algorithms to give movie suggestions based on movies you have watched in the past or Amazon’s algorithms that recommend products based on other customers bought before.
 Typical algorithm model selection can be decided broadly on following questions:
-·        How much data do you have & is it continuous?
-·        Is it classification or regression problem?
-·        Predefined variables (Labeled), unlabeled or mix?
-·        Data class skewed?
-·        What is the goal? – predict or rank?
-·        Result interpretation easy or hard?
+|·        How much data do you have & is it continuous?|
+|·        Is it classification or regression problem?|
+|·        Predefined variables (Labeled), unlabeled or mix?|
+|·        Data class skewed?|
+|·        What is the goal? – predict or rank?|
+|·        Result interpretation easy or hard?|
 Here are the most used algorithms for various business problems:
  
 **Decision Trees:** Decision tree output is very easy to understand even for people from non-analytical background. It does not require any statistical knowledge to read and interpret them. Fastest way to identify most significant variables and relation between two or more variables. Decision Trees are excellent tools for helping you to choose between several courses of action. Most popular decision trees are CART, CHAID, and C4.5 etc.
