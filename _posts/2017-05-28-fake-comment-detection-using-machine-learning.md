@@ -4,11 +4,132 @@ title: Fake Comment Detection Using Machine Learning
 subtitle: Used Simple Classifiers SVM, RandomForests, LogsiticRegression
 
 ---
+In this project, we use Support Vector Machine classifier to classify the fake comments using the dataset given by the client. You can download the dataset from the following [link](https://github.com/farooqkhadim/Fake-Comment-Detection-using-ML/data).
 
-Under what circumstances should we step off a path? When is it essential that we finish what we start? If I bought a bag of peanuts and had an allergic reaction, no one would fault me if I threw it out. If I ended a relationship with a woman who hit me, no one would say that I had a commitment problem. But if I walk away from a seemingly secure route because my soul has other ideas, I am a flake?  
+Steps:
 
-The truth is that no one else can definitively know the path we are here to walk. It’s tempting to listen—many of us long for the omnipotent other—but unless they are genuine psychic intuitives, they can’t know. All others can know is their own truth, and if they’ve actually done the work to excavate it, they will have the good sense to know that they cannot genuinely know anyone else’s. Only soul knows the path it is here to walk. Since you are the only one living in your temple, only you can know its scriptures and interpretive structure.  
+<ul>
+  <li>Preprocessing</li>
+  <li>Model Training</li>
+  <li>Model Prediction</li>
+</ul>
 
-At the heart of the struggle are two very different ideas of success—survival-driven and soul-driven. For survivalists, success is security, pragmatism, power over others. Success is the absence of material suffering, the nourishing of the soul be damned. It is an odd and ironic thing that most of the material power in our world often resides in the hands of younger souls. Still working in the egoic and material realms, they love the sensations of power and focus most of their energy on accumulation. Older souls tend not to be as materially driven. They have already played the worldly game in previous lives and they search for more subtle shades of meaning in this one—authentication rather than accumulation. They are often ignored by the culture at large, although they really are the truest warriors.  
+Here is some of the code:
 
-A soulful notion of success rests on the actualization of our innate image. Success is simply the completion of a soul step, however unsightly it may be. We have finished what we started when the lesson is learned. What a fear-based culture calls a wonderful opportunity may be fruitless and misguided for the soul. Staying in a passionless relationship may satisfy our need for comfort, but it may stifle the soul. Becoming a famous lawyer is only worthwhile if the soul demands it. It is an essential failure if you are called to be a monastic this time around. If you need to explore and abandon ten careers in order to stretch your soul toward its innate image, then so be it. Flake it till you make it.
+## Important Dependencies to Import
+
+~~~
+importsys import csv
+import datetime
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from datetime import datetime
+from sklearn.preprocessing import Imputer 
+from sklearn import cross_validation 
+from sklearn import metrics
+from sklearn import preprocessing
+from sklearn.linear_model import LinearRegression
+from sklearn.svm import SVC
+from sklearn.metrics import roc_curve, auc
+from sklearn.cross_validation import StratifiedKFold, train_test_split
+from sklearn.grid_search import GridSearchCV
+from sklearn.metrics import accuracy_score
+from sklearn.learning_curve import learning_curve
+from sklearn.metrics import classification_report
+from sklearn.metrics import confusion_matrix
+%matplotlib inline
+~~~
+
+## Function for Dataset Reading
+
+~~~
+def read_datasets():  
+  genuine_comments = pd.read_csv("data/not_fake_comments.csv") 
+  fake_comments = pd.read_csv("data/fake_comments.csv")
+  #print genuine_comments.columns
+  #print genuine_comments.describe()
+  #print fake_comments.describe()
+  x=pd.concat([genuine_comments,fake_comments]) y=len(fake_comments)*[0] + len(genuine_comments)*[1] 
+  return x,y
+~~~
+
+## Function for Feature Engineering
+
+~~~
+defextract_features(x):
+lang_list = list(enumerate(np.unique(x['lang'])))
+lang_dict = { name : i for i, name in lang_list }
+x.loc[:,'lang_code'] = x['lang'].map( lambda x: lang_dict[x]).astype(i nt)
+x.loc[:,'sex_code']=predict_sex(x['name'])
+feature_columns_to_use = ['statuses_count','followers_count','friend           s_count','favourites_count','listed_count','sex_code','lang_code']
+x=x.loc[:,feature_columns_to_use] 
+return x
+~~~
+
+## Function for plotting confusion matrix
+
+~~~
+defplot_confusion_matrix(cm,title='Confusionmatrix',cmap=plt.cm.Blue s):
+target_names=['Fake','Genuine']
+plt.imshow(cm, interpolation='nearest', cmap=cmap) plt.title(title)
+plt.colorbar()
+tick_marks = np.arange(len(target_names)) plt.xticks(tick_marks, target_names, rotation=45) 
+plt.yticks(tick_marks, target_names) 
+plt.tight_layout()
+plt.ylabel('True label')
+plt.xlabel('Predicted label')
+~~~
+
+## Function for training data using Support Vector Machine
+
+~~~
+def train(X_train,y_train,X_test):
+    """ Trains and predicts dataset with a SVM classifier """ # Scaling features
+    X_train=preprocessing.scale(X_train) 
+    X_test=preprocessing.scale(X_test)
+    Cs = 10.0 ** np.arange(-2,3,.5)
+    gammas = 10.0 ** np.arange(-2,3,.5)
+    param = [{'gamma': gammas, 'C': Cs}]
+    cvk = StratifiedKFold(y_train,n_folds=5)
+    classifier = SVC()
+    clf = GridSearchCV(classifier,param_grid=param,cv=cvk)
+    clf.fit(X_train,y_train)
+    print("The best classifier is: ",clf.best_estimator_) 
+    clf.best_estimator_.fit(X_train,y_train)
+    # Estimate score
+    scores = cross_validation.cross_val_score(clf.best_estimator_, X_train,y_train, cv=5)
+    print (scores)
+    print('Estimated score: %0.5f (+/- %0.5f)' % (scores.mean(), scores.std() / 2))
+    title = 'Learning Curves (SVM, rbf kernel, $\gamma=%.6f$)' %clf.best_estimator_.gamma
+    plot_learning_curve(clf.best_estimator_, title, X_train, y_train, cv=5)
+    plt.show()
+    # Predict class
+    y_pred = clf.best_estimator_.predict(X_test) 
+    return y_test,y_pred
+~~~
+
+## Splitting datasets in train and test dataset
+
+~~~
+ X_train,X_test,y_train,y_test = train_test_split(x, y, test_size=0.20, ran dom_state=44)
+~~~
+
+**Classificatin Accuracy: 0.904255319149**
+
+**Confusion Matrix without normalization**
+
+~~~
+[[262 6]
+ [48 248]]
+~~~
+
+**Confusion Matrix with normalization**
+
+~~~
+[[0.97761194 0.02238806]
+ [0.16216216 0.83783784]]
+~~~
+
+The complete code is available at the following [link](https://github.com/farooqkhadim/Fake-Comment-Detection-using-ML) .
+Thanks for reading.
