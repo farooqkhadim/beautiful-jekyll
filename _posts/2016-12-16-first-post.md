@@ -1,6 +1,6 @@
 ---
 layout: post
-title: First post!
+title: Machine Learning Algorithm Strategies
 image: /img/Machine_Learning.jpg
 subtitle: Which Machine Learning Algorithm To Choose
 ---
