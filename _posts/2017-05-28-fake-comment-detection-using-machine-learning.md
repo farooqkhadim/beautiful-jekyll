@@ -4,7 +4,7 @@ title: Fake Comment Detection Using Machine Learning
 subtitle: Used Simple Classifiers SVM, RandomForests, LogsiticRegression
 
 ---
-In this project, we use Support Vector Machine classifier to classify the fake comments using the dataset given by the client. You can download the dataset from the following [link](https://github.com/farooqkhadim/Fake-Comment-Detection-using-ML/data).
+In this project, we use Support Vector Machine classifier to classify the fake comments using the dataset given by the client. You can download the dataset from the following [link](https://github.com/farooqkhadim/Fake-Comment-Detection-using-ML/tree/master/data).
 
 Steps:
 
